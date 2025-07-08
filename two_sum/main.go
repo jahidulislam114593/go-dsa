@@ -2,45 +2,22 @@ package main
 
 import (
 	"fmt"
-	"sort"
 )
-
-type pair struct {
-	val int
-	idx int
-}
 
 func twoSum(arr []int, k int) (int, int) {
 
-	pairs := make([]pair, len(arr))
+	seen := make(map[int]int)
 
-	for i, v := range arr {
-		pairs[i] = pair{
-			val: v,
-			idx: i,
+	for i, num := range arr {
+		complement := k - num
+		if idx, found := seen[complement]; found {
+			return idx, i
 		}
+		seen[num] = i
 	}
 
-	sort.Slice(pairs, func(i, j int) bool {
-		return pairs[i].val < pairs[j].val
-	})
-
-	st := 0
-	en := len(arr) - 1
-
-	for st < en {
-		sum := pairs[st].val + pairs[en].val
-
-		if sum == k {
-			return pairs[st].idx, pairs[en].idx
-		} else if sum > k {
-			en--
-		} else {
-			st++
-		}
-
-	}
 	return -1, -1
+
 }
 
 func main() {
